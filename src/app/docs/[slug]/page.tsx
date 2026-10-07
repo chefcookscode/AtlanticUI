@@ -6,6 +6,8 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { BentoGridDemo } from "@/components/demos/bento-grid-demo";
 import { StackedGalleryDemo } from "@/components/demos/stacked-gallery-demo";
 import { ExpandableNavbarDemo } from "@/components/demos/expandable-navbar-demo";
+import { MorphingDropdownDemo } from "@/components/demos/morphing-dropdown-demo";
+import { morphingDropdownCode } from "@/lib/code-snippets";
 
 // Snippets
 import {
@@ -86,6 +88,23 @@ export default async function DocPage({ params }: DocPageProps) {
         </div>
         <ComponentPreview code={expandableNavbarCode}>
           <ExpandableNavbarDemo />
+        </ComponentPreview>
+      </div>
+    );
+  }
+
+
+  if (slug === "morphing-dropdown") {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight">Morphing Dropdown</h1>
+          <p className="text-neutral-400 text-sm mt-2">
+            A Stripe-style navigation menu with dynamic background morphing and horizontal slide transitions.
+          </p>
+        </div>
+        <ComponentPreview code={morphingDropdownCode}>
+          <MorphingDropdownDemo />
         </ComponentPreview>
       </div>
     );

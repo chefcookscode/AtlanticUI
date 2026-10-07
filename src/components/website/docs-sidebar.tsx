@@ -31,6 +31,7 @@ const docNavigation: DocNavGroup[] = [
       { title: "Bento Grid", slug: "bento-grid" },
       { title: "Stacked Card Gallery", slug: "stacked-gallery" },
       { title: "Expandable Navbar", slug: "expandable-navbar", isNew: true },
+      { title: "Morphing Dropdown", slug: "morphing-dropdown", isNew: true },
     ],
   },
 ];

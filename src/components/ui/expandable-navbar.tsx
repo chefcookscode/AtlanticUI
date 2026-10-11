@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useId, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -31,9 +31,19 @@ export const ExpandableNavbar = ({
 }: ExpandableNavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
 
   return (
     <motion.nav
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && isOpen) {
+          event.preventDefault();
+          event.stopPropagation();
+          setIsOpen(false);
+          toggleRef.current?.focus();
+        }
+      }}
       layout
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={cn(
@@ -68,11 +78,16 @@ export const ExpandableNavbar = ({
 
         {/* Morphing Toggle Button */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          ref={toggleRef}
+          type="button"
+          aria-label={isOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? panelId : undefined}
+          onClick={() => setIsOpen((open) => !open)}
           className="flex items-center space-x-1.5 rounded-lg bg-neutral-300/60 dark:bg-neutral-800 px-3 py-1.5 text-xs font-semibold text-neutral-800 dark:text-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition"
         >
           <span>{isOpen ? "Close" : ""}</span>
-          <span className="font-bold">:</span>
+          <span aria-hidden="true" className="font-bold">:</span>
         </button>
       </motion.div>
 
@@ -80,6 +95,7 @@ export const ExpandableNavbar = ({
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id={panelId}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

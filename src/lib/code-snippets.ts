@@ -192,7 +192,7 @@ export const StackedCardGallery = ({
 
 export const expandableNavbarCode = `"use client";
 
-import React, { useState } from "react";
+import React, { useId, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -221,9 +221,19 @@ export const ExpandableNavbar = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
 
   return (
     <motion.nav
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && isOpen) {
+          event.preventDefault();
+          event.stopPropagation();
+          setIsOpen(false);
+          toggleRef.current?.focus();
+        }
+      }}
       layout
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={cn(
@@ -242,17 +252,23 @@ export const ExpandableNavbar = ({
           </div>
         )}
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          ref={toggleRef}
+          type="button"
+          aria-label={isOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? panelId : undefined}
+          onClick={() => setIsOpen((open) => !open)}
           className="flex items-center space-x-1 rounded-lg bg-neutral-300 dark:bg-neutral-800 px-3 py-1.5 text-xs font-semibold"
         >
           <span>{isOpen ? "Close" : ""}</span>
-          <span>:</span>
+          <span aria-hidden="true">:</span>
         </button>
       </motion.div>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id={panelId}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

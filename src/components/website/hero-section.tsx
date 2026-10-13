@@ -5,6 +5,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Terminal, ChevronDown } from "lucide-react";
 
+
+
 export function HeroSection() {
   return (
     <section className="relative w-full min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center overflow-hidden border-b border-neutral-800 bg-black text-white px-6 py-8">
